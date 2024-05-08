@@ -28,11 +28,16 @@ export const UploadCSV = ({ setFile }: { setFile: (file: File) => void }) => {
                     <InboxOutlined />
                 </p>
                 <p className="ant-upload-text">
-                    Click or drag file to this area to upload
+                    Click or drag to upload a batch transfer CSV
                 </p>
                 <p className="ant-upload-hint">
-                    Support for a single or bulk upload. Strictly prohibited from
-                    uploading company data or other banned files.
+                    The file needs be a CSV with the following columns:
+                    <br />
+                    <b>fromSafe</b> - The Safe address to send tokens from
+                    <br />
+                    <b>toWallet</b> - The wallet address to send tokens to
+                    <br />
+                    <b>amount</b> - The amount of tokens to send
                 </p>
             </Dragger>
         </div>

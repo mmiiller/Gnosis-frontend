@@ -4,6 +4,7 @@ import { CaretDownFilled, PoweroffOutlined } from '@ant-design/icons';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 import { truncateAddress } from '../utils/address';
 import Blockies from 'react-blockies';
+
 export const NavBar = () => {
     const { isConnected } = useAccount();
     const { connect, connectors, error, isLoading, pendingConnector } = useConnect();
@@ -22,14 +23,15 @@ export const NavBar = () => {
                 style={{
                     flexGrow: 1,
                     display: 'flex',
-                    alignItems: 'center',
+                    alignItems: 'flex-end',
                     padding: 16
                 }}
             >
                 <img
                     src={YourSvg}
                     style={{
-                        height: 20
+                        height: 20,
+                        marginRight: 8
                     }}
                     alt="Your SVG"
                 />
@@ -40,7 +42,6 @@ export const NavBar = () => {
             ) : metamaskConnector ? (
                 <div
                     style={{
-                        borderLeft: '1px solid rgb(220, 222, 224)',
                         padding: '0px 16px',
                         display: 'flex',
                         alignItems: 'center',
@@ -138,7 +139,6 @@ const WalletConnectionDropDown = () => {
         <Dropdown menu={{ items }} placement="bottom">
             <div
                 style={{
-                    borderLeft: '1px solid rgb(220, 222, 224)',
                     padding: '0px 16px',
                     display: 'flex',
                     alignItems: 'center',
