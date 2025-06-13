@@ -1,10 +1,18 @@
 import { InboxOutlined } from '@ant-design/icons';
-import { Upload } from 'antd';
+import { Checkbox, Upload } from 'antd';
 import { Divider, Typography } from 'antd';
 const { Title } = Typography;
 const { Dragger } = Upload;
 
-export const UploadCSV = ({ setFile }: { setFile: (file: File) => void }) => {
+export const UploadCSV = ({
+    setFile,
+    setDownloadTransactions,
+    downloadTransactions
+}: {
+    setFile: (file: File) => void;
+    setDownloadTransactions: (download: boolean) => void;
+    downloadTransactions: boolean;
+}) => {
     return (
         <div
             style={{
@@ -17,7 +25,18 @@ export const UploadCSV = ({ setFile }: { setFile: (file: File) => void }) => {
         >
             <Title>Safe Batcher</Title>
             <Divider />
-
+            <div
+                style={{
+                    marginBottom: 16
+                }}
+            >
+                <Checkbox
+                    checked={downloadTransactions}
+                    onChange={e => setDownloadTransactions(e.target.checked)}
+                >
+                    Download transactions after creating
+                </Checkbox>
+            </div>
             <Dragger
                 multiple={false}
                 onChange={e => {

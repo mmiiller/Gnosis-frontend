@@ -5,7 +5,8 @@ import { parseFileAsCSV } from './utils/csv';
 import { NavBar } from './components/NavBar';
 function App() {
     const [file, setFile] = useState<File | null>(null);
-    const [omnibusSafe] = useState<string>('0xfB56372DA4E583B3F520Ddc72c03bf79e43DAB89');
+    const [omnibusSafe] = useState<string>('0xCceac3d64F9799F7A3113af26AfAFa9f68d17a60');
+    const [downloadTransactions, setDownloadTransactions] = useState(false);
     const [transfers, setTransfers] = useState<
         {
             fromSafe: string;
@@ -37,6 +38,7 @@ function App() {
                 <NavBar />
                 <ProposeTransactions
                     omnibusSafe={omnibusSafe}
+                    downloadTransactions={downloadTransactions}
                     transfers={transfers}
                     backToUpload={() => setFile(null)}
                 />
@@ -46,6 +48,8 @@ function App() {
         <>
             <NavBar />
             <UploadCSV
+                downloadTransactions={downloadTransactions}
+                setDownloadTransactions={setDownloadTransactions}
                 setFile={newFile => {
                     setFile(newFile);
                 }}

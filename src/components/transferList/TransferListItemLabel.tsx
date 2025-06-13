@@ -42,7 +42,7 @@ export const TransferListItemLabel = ({
                         marginRight: 16
                     }}
                 >
-                    MatToken: <b>transfer</b>
+                    BST: <b>transfer</b>
                 </div>
             </div>
             <div

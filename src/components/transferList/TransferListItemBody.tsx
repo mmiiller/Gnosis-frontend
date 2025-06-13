@@ -37,7 +37,7 @@ export const TransferListItemBody = ({
                             className="identicon"
                         />
                     </div>
-                    <b>zksync:</b>
+                    <b>sep:</b>
                     {transfer.fromSafe}
                 </div>
             </Col>
@@ -66,7 +66,7 @@ export const TransferListItemBody = ({
                             className="identicon"
                         />
                     </div>
-                    <b>zksync:</b>
+                    <b>sep:</b>
                     {transfer.toWallet}
                 </div>
             </Col>

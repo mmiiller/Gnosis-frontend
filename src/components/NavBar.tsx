@@ -87,7 +87,7 @@ const WalletConnectionDropDown = () => {
                 }}
             >
                 <div>
-                    <b>zksync:</b>
+                    <b>eth:</b>
                     {truncateAddress(address || '')}
                 </div>
                 <div
@@ -96,7 +96,7 @@ const WalletConnectionDropDown = () => {
                         fontWeight: 'bold'
                     }}
                 >
-                    {'0.00368 ETH'}
+                    {'0.10234 ETH'}
                 </div>
             </div>
         </>

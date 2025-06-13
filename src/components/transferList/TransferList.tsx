@@ -47,6 +47,9 @@ export const TransferList = ({
             );
         }
     }, [transfers]);
+    console.log({
+        transfers
+    });
     return (
         <div
             style={{
