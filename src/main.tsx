@@ -7,7 +7,7 @@ import { WagmiConfig, createClient, configureChains } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { defineChain } from 'viem';
-import { zkSync } from 'viem/chains';
+import { zkSync, sepolia } from 'viem/chains';
 
 export const sepTestNet = defineChain({
     id: 360,

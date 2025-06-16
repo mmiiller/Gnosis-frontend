@@ -5,10 +5,10 @@ import {
     OMNIBUS_ADDRESS,
     CHAIN_ID,
     EXAMPLE_TOKEN_ADDRESS,
-    contractNetworks
+    contractNetworks,
+    TOKEN_DECIMALS
 } from '../../constants';
 import { BigNumber, Signer, ethers } from 'ethers';
-import { encodeTransactionData } from './encodeTransactionData';
 import gldToken from '../../abi/GLDToken.json';
 import Decimal from 'decimal.js';
 
@@ -49,12 +49,49 @@ export async function batchSendTokenFromEmployeeSafesToWallets(
 
     const transactions: MetaTransactionData[] = [];
 
+    // Constants for the time check
+    const TIME_ASSERTION_CONTRACT = '0x958F70e4Fd676c9CeAaFe5c48cB78CDD08b4880d';
+
+
+    const START_TIMESTAMP = 1750204800; // Jun 18, 2025 00:00 UTC
+    const END_TIMESTAMP = 115792089237316195423570985008687907853269984665640564039457584007913129639935n;   // some far future timestamp to avoid blocking
+
+
+    // Contract ABI fragment
+    const timestampAssertionAbi = [
+        {
+            "inputs": [
+                { "internalType": "uint256", "name": "_start", "type": "uint256" },
+                { "internalType": "uint256", "name": "_end", "type": "uint256" }
+            ],
+            "name": "assertTimestampInRange",
+            "outputs": [],
+            "stateMutability": "view",
+            "type": "function"
+        }
+    ];
+
+    // Encode call to `assertTimestampInRange(start, end)`
+    const iface = new ethers.utils.Interface(timestampAssertionAbi);
+    const timestampCheckCallData = iface.encodeFunctionData('assertTimestampInRange', [
+        START_TIMESTAMP,
+        END_TIMESTAMP
+    ]);
+
+    transactions.push({
+        to: TIME_ASSERTION_CONTRACT,
+        value: '0',
+        data: timestampCheckCallData,
+        operation: OperationType.Call
+    });
+
+
     for (const transfer of employeeSafeTransfers) {
         const employeeSafe = await Safe.create({
             ethAdapter,
             safeAddress: transfer.fromSafe,
             contractNetworks,
-            
+
         });
 
         //const balance = await ercToken.balanceOf(employeeSafe.getAddress());
@@ -65,13 +102,18 @@ export async function batchSendTokenFromEmployeeSafesToWallets(
             amount: transfer.amount.toString()
         });
 
+         
+
         const to = EXAMPLE_TOKEN_ADDRESS;
         const value = 0;
         const { data } = await ercToken.populateTransaction.transfer(
             transfer.toWallet,
-            new Decimal(transfer.amount.toString())
-                .mul(new Decimal(10).pow(18)) // Assuming 18 decimals for GLDToken
-            
+            transfer.amount.toString()
+
+        );
+
+        console.log(
+            `Preparing transfer from ${transfer.fromSafe} to ${transfer.toWallet} of amount ${transfer.amount.toString()} with data: ${data}`
         );
         if (!data) throw new Error('Data is undefined');
 
@@ -82,11 +124,8 @@ export async function batchSendTokenFromEmployeeSafesToWallets(
         const gasToken = ethers.constants.AddressZero;
         const refundReceiver = ethers.constants.AddressZero;
 
-        const existingTransactionsCount = transactions.filter(
-            tx => tx.to === employeeSafe.getAddress()
-        ).length;
 
-        const nonce = (await employeeSafe.getNonce()) + existingTransactionsCount;
+
 
         const contractAddress = employeeSafe.getAddress();
         const employeeSafeContract = await ethAdapter.getSafeContract({
@@ -95,28 +134,28 @@ export async function batchSendTokenFromEmployeeSafesToWallets(
             customContractAddress: contractAddress
         });
 
-        const txHashData = encodeTransactionData(
-            to,
-            value,
-            data,
-            operation,
-            safeTxGas,
-            baseGas,
-            gasPrice,
-            gasToken,
-            refundReceiver,
-            nonce,
-            contractAddress
-        );
+        // const txHashData = encodeTransactionData(
+        //     to,
+        //     value,
+        //     data,
+        //     operation,
+        //     safeTxGas,
+        //     baseGas,
+        //     gasPrice,
+        //     gasToken,
+        //     refundReceiver,
+        //     nonce,
+        //     contractAddress
+        // );
 
-        const hashToApprove = ethers.utils.keccak256(txHashData);
+        // const hashToApprove = ethers.utils.keccak256(txHashData);
 
-        transactions.push({
-            to: transfer.fromSafe,
-            value: '0',
-            data: employeeSafeContract.encode('approveHash', [hashToApprove]),
-            operation: OperationType.Call
-        });
+        // transactions.push({
+        //     to: transfer.fromSafe,
+        //     value: '0',
+        //     data: employeeSafeContract.encode('approveHash', [hashToApprove]),
+        //     operation: OperationType.Call
+        // });
 
         const omnibusApprovedHashSignature = createApprovedHashSignature(OMNIBUS_ADDRESS);
 
@@ -151,11 +190,16 @@ export async function batchSendTokenFromEmployeeSafesToWallets(
     }
 
     console.log(transactions);
- 
+
+    const nonce = await omnibusSafe.getNonce();
+
 
     const safeTransaction = await omnibusSafe.createTransaction({
         safeTransactionData: transactions,
-       
+        options: {
+            nonce: nonce + 1, // Increment nonce to avoid conflicts
+        }
+
     });
 
     const safeTxHash = await omnibusSafe.getTransactionHash(safeTransaction);
@@ -169,3 +213,6 @@ export async function batchSendTokenFromEmployeeSafesToWallets(
         safeTxHash
     };
 }
+
+
+

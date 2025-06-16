@@ -61,7 +61,7 @@ export const contractNetworks = {
     [11155111]: {
         safeMasterCopyAddress: '0xfb1bffC9d739B8D520DaF37dF666da4C687191EA',
         safeProxyFactoryAddress: '0xC22834581EbC8527d974F8a1c97E1bEA4EF910BC',
-        multiSendAddress: '0x998739BFdAAdde7C933B942a68053933098f9EDa',
+        multiSendAddress: '0xA1dabEF33b3B82c7814B6D82A79e50F4AC44102B',
         multiSendCallOnlyAddress: '0xA1dabEF33b3B82c7814B6D82A79e50F4AC44102B',
         fallbackHandlerAddress: '0x017062a1dE2FE6b99BE3d9d37841FeD19F573804',
         signMessageLibAddress: '0x98FFBBF51bb33A056B08ddf711f289936AafF717',

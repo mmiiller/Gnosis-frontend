@@ -27,7 +27,7 @@ export async function proposeSafeTransaction(
     console.log(safeTransaction.data.data);
     const apiKit = new SafeApiKit({
         chainId: BigInt(CHAIN_ID),
-        txServiceUrl: 'https://transaction.safe.shape.network/',
+         
     });
 
     const senderSignature = await safeSdk.signTransactionHash(safeTxHash);
