@@ -3,9 +3,10 @@ import { ProposeTransactions } from './components/ProposeTransactions';
 import { UploadCSV } from './components/UploadCSV';
 import { parseFileAsCSV } from './utils/csv';
 import { NavBar } from './components/NavBar';
+import { OMNIBUS_ADDRESS } from './constants';
 function App() {
     const [file, setFile] = useState<File | null>(null);
-    const [omnibusSafe] = useState<string>('0xCceac3d64F9799F7A3113af26AfAFa9f68d17a60');
+    const [omnibusSafe] = useState<string>(OMNIBUS_ADDRESS);
     const [downloadTransactions, setDownloadTransactions] = useState(false);
     const [transfers, setTransfers] = useState<
         {
@@ -19,11 +20,16 @@ function App() {
             parseFileAsCSV(file).then(data => {
                 if (data) {
                     setTransfers(
-                        data.map(({ from_safe, to_wallet, amount }) => ({
-                            fromSafe: from_safe,
-                            toWallet: to_wallet,
-                            amount
-                        }))
+                        data
+                            .filter(x => {
+                                //filter out empt rows
+                                return x.from_safe && x.to_wallet && x.amount;
+                            })
+                            .map(({ from_safe, to_wallet, amount }) => ({
+                                fromSafe: from_safe,
+                                toWallet: to_wallet,
+                                amount
+                            }))
                     );
                 }
             });

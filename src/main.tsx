@@ -7,7 +7,7 @@ import { WagmiConfig, createClient, configureChains } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { defineChain } from 'viem';
-import { zkSync, sepolia } from 'viem/chains';
+import { zkSync, mainnet } from 'viem/chains';
 
 export const sepTestNet = defineChain({
     id: 360,
@@ -28,7 +28,7 @@ export const sepTestNet = defineChain({
 const { chains, provider, webSocketProvider } = configureChains(
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    [zkSync],
+    [mainnet],
     [publicProvider()]
 );
 console.log(chains);

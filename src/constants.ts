@@ -9,11 +9,11 @@
 //     '0x0E86a7A352764BeCb7556aC18dD12a88f42d211C'
 // ];
 
-export const CHAIN_ID = 324;
-export const OMNIBUS_ADDRESS = '0x8B1D95745E0b7baea9928c07195b0c6501374785';
-export const EXAMPLE_TOKEN_ADDRESS = '0x5A7d6b2F92C77FAD6CCaBd7EE0624E64907Eaf3E';
+export const CHAIN_ID = 1;
+export const OMNIBUS_ADDRESS = '0x2C2450FCB021bB22d0e1B25916Dae662C451C5f0';
+export const EXAMPLE_TOKEN_ADDRESS = '0x1d926bbe67425c9f507b9a0e8030eedc7880bf33';
 export const TOKEN_DECIMALS = 18;
-export const MY_METAMASK_ADDRESS = '0xfA7E243431dCcD1996CbE4033e0d09cbecbea1F6';
+export const MY_METAMASK_ADDRESS = '0x08FD224A9dF72715d446DD4a2C71A004423d7218';
 export const txServiceUrl = 'https://safe-transaction-zksync.safe.global/';
 export const EMPLOYEE_SAFES = [
     '0x98950E241E6fe606beB8a4302ceFe638e55DbcDd',
