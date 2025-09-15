@@ -1,0 +1,3 @@
+[submodule "packages/gnosis-frontend"]
+	path = packages/gnosis-frontend
+	url = https://github.com/mmiiller/Gnosis-frontend.git
